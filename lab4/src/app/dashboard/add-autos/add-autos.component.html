@@ -1,0 +1,73 @@
+<form [formGroup]="autoForm" (ngSubmit)="onSubmit()">
+    <div class="card m-3">
+        <h5 class="card-header">Add autos</h5>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Number of autos</label>
+                    <select formControlName="numOfAutos" class="form-control" (change)="onChangeAutos($event)" 
+                        [ngClass]="{ 'is-invalid': submitted && f.numOfAutos.errors }">
+                        <option value=""></option>
+                        <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">{{ i }}</option>
+                    </select>
+                    <div *ngIf="submitted && f.numOfAutos.errors" class="invalid-feedback">
+                        <div *ngIf="f.numOfAutos.errors.required">Number of autos is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let auto of a.controls; let i = index" class="list-group list-group-flush">
+            <div class="list-group-item">
+                <h5 class="card-title">Auto {{i + 1}}</h5>
+                <div [formGroup]="auto" class="form-row">
+                    <div class="form-group col-4">
+                        <label for="brand">Brand</label>
+                        <input placeholder="Brand" [typeahead]="brands" class="form-control" formControlName="brand" 
+                            [ngClass]="{ 'is-invalid': submitted && auto.controls.brand.erorrs }">
+                        <!-- <select class="form-control" name="brand" formControlName="brand" 
+                        [ngClass]="{ 'is-invalid': submitted && auto.controls.brand.erorrs }">
+                            <option value="" disabled selected>Brand</option>
+                            <option *ngFor="let brand of brands" [value]="brand">{{ brand }}</option>
+                        </select> -->
+                        <div *ngIf="submitted && auto.controls.brand.errors" class="invalid-feedback">
+                            <div *ngIf="auto.controls.brand.errors">Brand is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="model">Model</label>
+                        <input class="form-control" type="text" placeholder="Model" formControlName="model"
+                            [ngClass]="{ 'is-invalid': submitted && auto.controls.model.errors }" />
+                        <div *ngIf="submitted && auto.controls.model.errors" class="invalid-feedback">
+                            <div *ngIf="auto.controls.model.errors.required">Model is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="price">Price</label>
+                        <input class="form-control" type="number" placeholder="Price" formControlName="price"
+                            [ngClass]="{ 'is-invalid': submitted && auto.controls.price.errors }" />
+                        <div *ngIf="submitted && auto.controls.price.errors" class="invalid-feedback">
+                            <div *ngIf="auto.controls.price.errors.required">Price is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button class="btn btn-primary mr-1" (click)="onSubmit(template)">Buy cars</button>
+            <button class="btn btn-secondary mr-1" type="reset" (click)="onReset()">Reset</button>
+            <button class="btn btn-secondary" type="button" (click)="onClear()">Clear</button>
+        </div>
+    </div>
+</form>
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Success</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        {{ this.autoForm.value | json }}
+    </div>  
+  </ng-template>

@@ -1,0 +1,41 @@
+<app-header [navBarTmpl]="homeNav"></app-header>
+
+<p [ngClass]="{ 'bold': isLoggedIn }" #userNameTmplVar>
+    Hello, {{user.name}}
+</p>
+
+<div>
+    {{ userNameTmplVar.textContent }}
+</div>
+
+<input [(ngModel)]="user.name" />
+<button *ngIf="!isLoggedIn" (click)="isLoggedIn = true">Log in</button>
+
+<app-profile
+    *ngIf="isLoggedIn"
+    [user]="user"
+    (onlogout)="onLogout($event)" #profile>
+    <h1>Some title</h1>
+</app-profile>
+
+<button (click)="profileComponent.customize()">
+    Make my profile stylish!
+</button>
+
+<div *ngIf="isLoggedIn; else unathorized">
+    <p>My articles ({{ articles.length }}):</p>
+    <span *ngIf="articles.length === 0">No articles found</span>
+    <ul>
+        <li *ngFor="let article of articles">
+            {{ article.name | uppercase }} - {{ article.createdOn | date: 'yyyy-MM-dd' }}
+        </li>
+    </ul>
+</div>
+
+<ng-template #unathorized>
+    <p>Please, log in to see your articles.</p>
+</ng-template>
+
+<ng-template #homeNav>
+    Home page navigation
+</ng-template>

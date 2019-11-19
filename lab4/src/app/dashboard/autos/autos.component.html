@@ -1,0 +1,13 @@
+<form class="mt-4" (ngSubmit)="onSubmit()" #carForm="ngForm">
+    <div class="form-group">
+        <label for="brand">Brand</label>
+        <input #brand="ngModel"
+            type="text"
+            class="form-control"
+            id="brand"
+            name="brand"
+            [(ngModel)]="carModel.brand"
+            required>
+        <div [hidden]="brand.valid || !isSubmited" class="not-valid">Brand is required</div>
+    </div>
+</form>
